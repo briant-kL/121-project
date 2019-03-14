@@ -60,10 +60,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\EnemyMovement.cs" />
     <Compile Include="Assets\Scripts\pCamera.cs" />
     <Compile Include="Assets\Scripts\playerMovement.cs" />
     <Compile Include="Assets\Scripts\ragdoll.cs" />
     <Compile Include="Assets\Scripts\rotater.cs" />
+    <Compile Include="Assets\Scripts\trap.cs" />
+    <None Include="Assets\Material\gold.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/briant/Documents/GitHub/121-project/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

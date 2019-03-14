@@ -42,20 +42,24 @@ public class playerMovement : MonoBehaviour
     private float _defaultSpeed;
 
     private float _heavyFrame;
-    
+
+    public bool _lowHealth = false;
+
+
+
     
     // Start is called before the first frame update
     void Start()
     {
         playerController = GetComponent<CharacterController>();
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         particles = GetComponent<ParticleSystem>();
         
         _defaultSpeed = speed;
-
-
+        //_lowHealth = false;
+        Debug.Log(animator.GetBool("hasWeapon"));
         //Debug.Log(animator.GetLayerIndex("WK_heavy_infantry_08_attack_B"));
-        
+
 
     }
 
@@ -80,12 +84,12 @@ public class playerMovement : MonoBehaviour
 
     void LightAttack()
     {
-        
-        if (Input.GetMouseButtonDown(0))
+
+        if (Input.GetMouseButtonDown(0) && haveWeapon == true)
         {
             //animator.SetBool("attacking", true);
             //animator.SetInteger("condition", 4);
-
+            animator.SetTrigger("liteAttack");
             StartCoroutine(liteAttackRoutine());
 
         }
@@ -96,11 +100,11 @@ public class playerMovement : MonoBehaviour
     void HeavyAttack()
     {
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && haveWeapon == true)
         {
             //animator.SetBool("attacking", true);
             //animator.SetInteger("condition", 4);
-
+            animator.SetTrigger("heavyAttack");
             StartCoroutine(hvyAttackRoutine());
 
         }
@@ -114,23 +118,13 @@ public class playerMovement : MonoBehaviour
 
     void Roll()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        movement = new Vector2(h, v);
-        //These lines of code change the rotation of the player object so that it can walk in the right the direction according to the orientation of the camera
-        Vector3 moveInput = transform.forward * movement.y + transform.right * movement.x;
-        movement_direction.x = moveInput.x * speed;
-        movement_direction.z = moveInput.z * speed;
-        playerController.Move(movement_direction * Time.deltaTime);
-
-
-
         if (Input.GetKeyDown("c"))
         {
-            StartCoroutine(RollRoutine());
+            animator.SetTrigger("roll");
+            RollRoutine();
         }
 
-
+        
 
     }
 
@@ -139,7 +133,7 @@ public class playerMovement : MonoBehaviour
     {
         Debug.Log("heavy Attack");
         _hvyAtk_Hitbox.SetActive(true);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         _hvyAtk_Hitbox.SetActive(false);
         Debug.Log("done");
     }
@@ -157,9 +151,17 @@ public class playerMovement : MonoBehaviour
 
     IEnumerator RollRoutine()
     {
-        Debug.Log("Rolling");
+        //Debug.Log("Rolling");
+        yield return new WaitForSeconds(0);
+        Debug.Log("done backstep");
+    }
+
+    IEnumerator swordRoutine()
+    {
+        //Debug.Log("Rolling");
         yield return new WaitForSeconds(1);
-        Debug.Log("done Rolling");
+        Debug.Log("picked up Sword");
+        speed = _defaultSpeed;
     }
 
 
@@ -176,37 +178,37 @@ public class playerMovement : MonoBehaviour
         movement_direction.z = moveInput.z * speed;
         playerController.Move(movement_direction * Time.deltaTime);
 
-        
-        //Walking Animations
+
+        // Animations
 
 
         //Walking Forward
         if (Input.GetKey("w"))
         {
             //Debug.Log(v);
-            //animator.SetBool("walking", true);
+            animator.SetBool("walking", true);
             //animator.SetInteger("condition", 1);
 
         }
 
         else if (Input.GetKeyUp("w"))
         {
-            //animator.SetBool("walking", false);
+            animator.SetBool("walking", false);
             //animator.SetInteger("condition", 0);
 
         }
 
-   
+
         //Sprint
-        if (Input.GetKey(KeyCode.LeftShift) )
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            //animator.SetBool("running", true);
+            animator.SetBool("running", true);
             speed = sprint;
-            
+
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            //animator.SetBool("running", false);
+            animator.SetBool("running", false);
             speed = _defaultSpeed;
         }
 
@@ -214,58 +216,55 @@ public class playerMovement : MonoBehaviour
         //walkbackwards
         if (Input.GetKey("s"))
         {
-            //Debug.Log(v);
-            //animator.SetBool("backwalking", true);
-
-            //animator.SetInteger("condition", -1);
+            speed = _defaultSpeed / 2;
+            //animator.SetBool("walking_backwards", true);
+            //Debug.Log(animator.GetBool("walking_backwards"));
+            animator.SetInteger("condition", -1);
         }
         else if (Input.GetKeyUp("s"))
         {
-            //animator.SetBool("backwalking", false);
-
-            //animator.SetInteger("condition", 0);
+            //animator.SetBool("walking_backwards", false);
+            speed = _defaultSpeed;
+            animator.SetInteger("condition", 0);
 
         }
 
 
         if (Input.GetKey("a"))
         {
-           // Debug.Log(v);
-
+            // Debug.Log(v);
+            speed = _defaultSpeed;
+            animator.SetBool("strafeLeft", true);
             //animator.SetInteger("condition", 1);
 
         }
 
         else if (Input.GetKeyUp("a"))
         {
-
+            speed = _defaultSpeed;
+            animator.SetBool("strafeLeft", false);
             //animator.SetInteger("condition", 0);
 
         }
 
         if (Input.GetKey("d"))
         {
-           // Debug.Log(v);
-
+            // Debug.Log(v);
+            speed = _defaultSpeed;
+            animator.SetBool("strafeRight", true);
             //animator.SetInteger("condition", -1);
 
         }
 
         else if (Input.GetKeyUp("d"))
         {
-
+            animator.SetBool("strafeRight", false);
             //animator.SetInteger("condition", 0);
 
         }
 
 
 
-        if (Input.GetKeyDown("c"))
-        {
-            Debug.Log("Rolling");
-            movement_direction.x = 10;
-            //RollRoutine();
-        }
 
         //Jumping
         //Using Raycast to check Grounded
@@ -320,6 +319,9 @@ public class playerMovement : MonoBehaviour
             Debug.Log("You have gotten a weapon");
             weapon.SetActive(true);
             other.gameObject.SetActive(false);
+            haveWeapon = true;
+            animator.SetBool("hasWeapon", true);
+            Debug.Log(animator.GetBool("hasWeapon"));
 
         }
 

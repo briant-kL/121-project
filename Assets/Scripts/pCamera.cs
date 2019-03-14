@@ -31,7 +31,7 @@ public class pCamera : MonoBehaviour
         x += Input.GetAxis("Mouse X") * sensitivity;
         y += Input.GetAxis("Mouse Y") * -sensitivity;
 
-        Quaternion rotation = Quaternion.Euler(0, x, 0);
+        Quaternion rotation = Quaternion.Euler(2, x, 0);
         Vector3 position = rotation * new Vector3(0f, 0f, -minDistance) + player.transform.position;
         Vector3 position2 = rotation * new Vector3(0f, 0f, -minDistance) + target.transform.position;
         transform.rotation = rotation;

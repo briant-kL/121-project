@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7725514275581622051}
   - component: {fileID: 7725514275581622050}
   - component: {fileID: 7725514275581622049}
-  - component: {fileID: 7725514275581622048}
   m_Layer: 0
   m_Name: blades_of_death
   m_TagString: kill_env
@@ -93,16 +92,3 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &7725514275581622048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725514275581622055}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fdbdaf5a61264442a09be47809b0b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 2500
