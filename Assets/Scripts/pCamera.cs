@@ -14,11 +14,13 @@ public class pCamera : MonoBehaviour
     private float x;
     private float y;
 
+    private playerMovement controls;
 
     // Start is called before the first frame update
     void Start()
     {
-       
+        controls = player.GetComponent<playerMovement>();
+        //Debug.Log(controls.isDead);
     }
 
     // lateupdate Best for camera and procedural animations
@@ -34,13 +36,25 @@ public class pCamera : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(2, x, 0);
         Vector3 position = rotation * new Vector3(0f, 0f, -minDistance) + player.transform.position;
         Vector3 position2 = rotation * new Vector3(0f, 0f, -minDistance) + target.transform.position;
+        ///Vector3 position3 = rotation * new Vector3(0f, 0f, -minDistance) + target2.transform.position;
         transform.rotation = rotation;
-        transform.position = position2;
+
+        if(controls.isDead != true)
+        {
+            transform.position = position2;
+        }
+
         if (Input.GetAxis("Mouse X") != 0)
         {
             player.transform.Rotate(0, h, 0);
             target.transform.Rotate(0, h, 0);
+            //target2.transform.Rotate(0, h, 0);
         }
+
+
+
+
+
     }
 
 

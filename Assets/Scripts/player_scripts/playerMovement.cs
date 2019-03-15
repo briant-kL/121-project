@@ -17,19 +17,16 @@ public class playerMovement : MonoBehaviour
     public GameObject ragdoll;
     public GameObject _liteAtk_Hitbox;
     public GameObject _hvyAtk_Hitbox;
-    public int health;
 
     public float distToGround = 1.0f;
-
+    public bool isDead;
 
 
 
     //inventory
     public GameObject weapon;
     public bool haveWeapon = false;
-    public bool key1 = false;
-    public bool key2 = false;
-    public bool key3 = false;
+    
 
     //private variables
     private CharacterController playerController;
@@ -45,8 +42,8 @@ public class playerMovement : MonoBehaviour
 
     public bool _lowHealth = false;
 
-
-
+    private playerMovement controls;
+    private Animator dead;
     
     // Start is called before the first frame update
     void Start()
@@ -54,14 +51,14 @@ public class playerMovement : MonoBehaviour
         playerController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         particles = GetComponent<ParticleSystem>();
-        
+        controls = GetComponent<playerMovement>();
         _defaultSpeed = speed;
         //_lowHealth = false;
         Debug.Log(animator.GetBool("hasWeapon"));
         //Debug.Log(animator.GetLayerIndex("WK_heavy_infantry_08_attack_B"));
-
-
-    }
+        dead = ragdoll.GetComponent<Animator>();
+        isDead = false;
+}
 
     // Update is called once per frame
     void Update()
@@ -72,9 +69,6 @@ public class playerMovement : MonoBehaviour
 
         LightAttack();
         HeavyAttack();
-
-       
-        
         Roll();
 
     }
@@ -233,7 +227,7 @@ public class playerMovement : MonoBehaviour
         if (Input.GetKey("a"))
         {
             // Debug.Log(v);
-            speed = _defaultSpeed;
+            
             animator.SetBool("strafeLeft", true);
             //animator.SetInteger("condition", 1);
 
@@ -241,7 +235,7 @@ public class playerMovement : MonoBehaviour
 
         else if (Input.GetKeyUp("a"))
         {
-            speed = _defaultSpeed;
+            
             animator.SetBool("strafeLeft", false);
             //animator.SetInteger("condition", 0);
 
@@ -250,7 +244,7 @@ public class playerMovement : MonoBehaviour
         if (Input.GetKey("d"))
         {
             // Debug.Log(v);
-            speed = _defaultSpeed;
+            
             animator.SetBool("strafeRight", true);
             //animator.SetInteger("condition", -1);
 
@@ -264,12 +258,49 @@ public class playerMovement : MonoBehaviour
         }
 
 
+        if (Input.GetKeyDown("e"))
+        {
+            // Debug.Log(v);
+            //animator.SetBool("isDead", true);
+            Debug.Log("You have Died");
+            //gameObject.SetActive(false);
+
+            gameObject.SetActive(false);
+            ragdoll.SetActive(true);
+          
+
+        }
+
+        if (Input.GetKeyUp("space"))
+        {
+            animator.SetTrigger("jump");
+            velocity.y += Mathf.Sqrt(_jumpheight * -2f * Gravity);
+        }
+
+
+
+
+        ////    CHECKS IF DEAD
+
+        if (isDead == true)
+        {
+            //animator.enabled = false;
+            //controls.enabled = false;
+            gameObject.SetActive(false);
+            ragdoll.SetActive(true);
+            
+        }
+
+
+
+
+
 
 
         //Jumping
         //Using Raycast to check Grounded
         //Debug.Log(isGrounded());
-
+        /*
         if (isGrounded() == true)
         {
             //Debug.Log("grounded");
@@ -280,7 +311,8 @@ public class playerMovement : MonoBehaviour
             }
 
         }
-
+        */
+        
 
         //Gravity and Drag physics
         velocity.y += Gravity * Time.deltaTime;
@@ -301,18 +333,6 @@ public class playerMovement : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("kill_env"))
-        {
-            //gameObject.SetActive(false);
-            Debug.Log("You have been hit");
-            health = health - 1;
-            Debug.Log(health);
-            //ragdoll.SetActive(true);
-        }
-
-
-
-        //Inventory collisions
 
         if (other.gameObject.CompareTag("weapon"))
         {
@@ -325,38 +345,9 @@ public class playerMovement : MonoBehaviour
 
         }
 
-        if (other.gameObject.CompareTag("healthPack"))
-        {
-            Debug.Log("You gotten some health");
-            health = health + 1;
-            Debug.Log(health);
-            other.gameObject.SetActive(false);
+        
 
-        }
-
-        if (other.gameObject.CompareTag("key1"))
-        {
-            Debug.Log("key1 acquired");
-            key1 = true;
-            other.gameObject.SetActive(false);
-
-        }
-
-        if (other.gameObject.CompareTag("key2"))
-        {
-            Debug.Log("key2 acquired");
-            key2 = true;
-            other.gameObject.SetActive(false);
-
-        }
-
-        if (other.gameObject.CompareTag("key3"))
-        {
-            Debug.Log("key3 acquired");
-            key3 = true;
-            other.gameObject.SetActive(false);
-
-        }
+        
 
     }
 

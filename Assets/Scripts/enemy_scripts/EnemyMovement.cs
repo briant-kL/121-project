@@ -9,11 +9,11 @@ public class EnemyMovement : MonoBehaviour
     //EnemyHealth enemyHealth;        // Reference to this enemy's health.
     NavMeshAgent nav;               // Reference to the nav mesh agent.
     public GameObject hitbox;
+    public int health;
     //https://unity3d.com/learn/tutorials/projects/survival-shooter/enemy-one
     private bool foundPlayer;
-
     private Animator animator;
-
+    public GameObject ragdoll;
     void Awake()
     {
         // Set up the references.
@@ -56,6 +56,8 @@ public class EnemyMovement : MonoBehaviour
     {
         hitbox.SetActive(true);
         yield return new WaitForSeconds(1);
+        
+        //playerHealth.health--;
         hitbox.SetActive(false);
     }
 
@@ -70,13 +72,12 @@ public class EnemyMovement : MonoBehaviour
 
 
 
-        //Inventory collisions
 
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("hit player");
+            Debug.Log("start attack on player");
             animator.SetTrigger("Attacking");
-            attackingRoutine();
+            StartCoroutine(attackingRoutine());
             //weapon.SetActive(true);
             //other.gameObject.SetActive(false);
             //haveWeapon = true;
@@ -85,7 +86,14 @@ public class EnemyMovement : MonoBehaviour
 
         }
 
+        if (other.gameObject.CompareTag("sword_hitbox"))
+        {
+            ragdoll.SetActive(true);
+            gameObject.SetActive(false);
+            
+        }
         
+
 
     }
 

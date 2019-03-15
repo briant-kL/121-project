@@ -12,6 +12,9 @@ TagManager:
   - key2
   - key3
   - healthPack
+  - door1
+  - sword_hitbox
+  - zombie_hitbox
   layers:
   - Default
   - TransparentFX
