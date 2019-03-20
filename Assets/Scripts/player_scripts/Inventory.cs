@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Inventory : MonoBehaviour
 {
@@ -84,7 +85,7 @@ public class Inventory : MonoBehaviour
         {
             //gameObject.SetActive(false);
             Debug.Log("You have been hit");
-            player.health = player.health - 1;
+            player.health = 0;
             Debug.Log(player.health);
             //ragdoll.SetActive(true);
         }
@@ -125,6 +126,8 @@ public class Inventory : MonoBehaviour
             {
                 other.gameObject.SetActive(false);
                 Debug.Log("Door Unlocked");
+                SceneManager.LoadScene(0);
+
             }
             else
                 Debug.Log("You dont have the key");

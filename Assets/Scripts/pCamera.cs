@@ -16,6 +16,11 @@ public class pCamera : MonoBehaviour
 
     private playerMovement controls;
 
+    /*
+    private RaycastHit ray;
+    public Vector3 clipCheckOffset = new Vector3(0, 1, 0);
+    */
+
     // Start is called before the first frame update
     void Start()
     {

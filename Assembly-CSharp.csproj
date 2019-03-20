@@ -60,12 +60,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\deadUI.cs" />
     <Compile Include="Assets\Scripts\enemy_scripts\EnemyMovement.cs" />
     <Compile Include="Assets\Scripts\enemy_scripts\hitbox_zombie.cs" />
+    <Compile Include="Assets\Scripts\loadSceneOnClick.cs" />
     <Compile Include="Assets\Scripts\pCamera.cs" />
     <Compile Include="Assets\Scripts\player_scripts\hitbox_Sword.cs" />
     <Compile Include="Assets\Scripts\player_scripts\Inventory.cs" />
     <Compile Include="Assets\Scripts\player_scripts\playerMovement.cs" />
+    <Compile Include="Assets\Scripts\quitOnClick.cs" />
     <Compile Include="Assets\Scripts\ragdoll.cs" />
     <Compile Include="Assets\Scripts\rotater.cs" />
     <Compile Include="Assets\Scripts\trap.cs" />

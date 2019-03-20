@@ -14,6 +14,9 @@ public class EnemyMovement : MonoBehaviour
     private bool foundPlayer;
     private Animator animator;
     public GameObject ragdoll;
+    private bool isDead;
+
+    private EnemyMovement enemy;
     void Awake()
     {
         // Set up the references.
@@ -23,7 +26,8 @@ public class EnemyMovement : MonoBehaviour
         //playerHealth = player.GetComponent<PlayerHealth>();
         //enemyHealth = GetComponent<EnemyHealth>();
         nav = GetComponent<NavMeshAgent>();
-
+        enemy = GetComponent<EnemyMovement>();
+        isDead = false;
     }
 
 
@@ -43,7 +47,7 @@ public class EnemyMovement : MonoBehaviour
             nav.enabled = false;
         }
         */
-        if(player != null)
+        if(player != null && isDead == false)
         {
             nav.SetDestination(player.position);
             animator.SetBool("foundPlayer", true);
@@ -65,9 +69,12 @@ public class EnemyMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("kill_env"))
         {
-            gameObject.SetActive(false);
+            //enemy.enabled = false;
+            //animator.enabled = false;
+            //nav.enabled = false;
             //Debug.Log("You have been hit");
             //ragdoll.SetActive(true);
+            gameObject.SetActive(false);
         }
 
 
@@ -75,9 +82,13 @@ public class EnemyMovement : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("start attack on player");
-            animator.SetTrigger("Attacking");
-            StartCoroutine(attackingRoutine());
+            if(isDead == false)
+            {
+                Debug.Log("start attack on player");
+                animator.SetTrigger("Attacking");
+                StartCoroutine(attackingRoutine());
+            }
+            
             //weapon.SetActive(true);
             //other.gameObject.SetActive(false);
             //haveWeapon = true;
@@ -91,6 +102,10 @@ public class EnemyMovement : MonoBehaviour
             //ragdoll.SetActive(true);
             //Instantiate<>
             gameObject.SetActive(false);
+            //enemy.enabled = false;
+            //animator.enabled = false;
+            //nav.enabled = false;
+            //isDead = true;
             
         }
         

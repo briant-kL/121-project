@@ -242,7 +242,7 @@ public class playerMovement : MonoBehaviour
         if (Input.GetKey("a"))
         {
             // Debug.Log(v);
-
+            speed = _defaultSpeed;
             animator.SetBool("strafeLeft", true);
             //animator.SetInteger("condition", 1);
 
@@ -259,7 +259,7 @@ public class playerMovement : MonoBehaviour
         if (Input.GetKey("d"))
         {
             // Debug.Log(v);
-
+            speed = _defaultSpeed;
             animator.SetBool("strafeRight", true);
             //animator.SetInteger("condition", -1);
 
