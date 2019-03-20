@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class playerMovement : MonoBehaviour
 {
-    
+
 
 
     //Public variables
@@ -22,11 +22,14 @@ public class playerMovement : MonoBehaviour
     public bool isDead;
 
 
+    public Text healthText;
+
+
 
     //inventory
     public GameObject weapon;
     public bool haveWeapon = false;
-    
+    public int health;
 
     //private variables
     private CharacterController playerController;
@@ -34,7 +37,7 @@ public class playerMovement : MonoBehaviour
     private Vector3 velocity;
     private Vector2 movement;
     private Vector3 movement_direction = Vector3.zero;
-    
+
     private ParticleSystem particles;
     private float _defaultSpeed;
 
@@ -44,7 +47,7 @@ public class playerMovement : MonoBehaviour
 
     private playerMovement controls;
     private Animator dead;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,22 +61,34 @@ public class playerMovement : MonoBehaviour
         //Debug.Log(animator.GetLayerIndex("WK_heavy_infantry_08_attack_B"));
         dead = ragdoll.GetComponent<Animator>();
         isDead = false;
-}
+
+        SetCountText();
+        Debug.Log(health);
+
+    }
 
     // Update is called once per frame
     void Update()
     {
-        
+
 
         PlayerMovement();
 
         LightAttack();
         HeavyAttack();
         Roll();
-
+        SetCountText();
     }
 
 
+    void SetCountText()
+    {
+        healthText.text = "Health: " + health.ToString();
+        if (health <= 0)
+        {
+            healthText.text = "DEAD";
+        }
+    }
 
 
     void LightAttack()
@@ -88,7 +103,7 @@ public class playerMovement : MonoBehaviour
 
         }
 
-        
+
     }
 
     void HeavyAttack()
@@ -102,7 +117,7 @@ public class playerMovement : MonoBehaviour
             StartCoroutine(hvyAttackRoutine());
 
         }
-        
+
 
 
     }
@@ -118,7 +133,7 @@ public class playerMovement : MonoBehaviour
             RollRoutine();
         }
 
-        
+
 
     }
 
@@ -227,7 +242,7 @@ public class playerMovement : MonoBehaviour
         if (Input.GetKey("a"))
         {
             // Debug.Log(v);
-            
+
             animator.SetBool("strafeLeft", true);
             //animator.SetInteger("condition", 1);
 
@@ -235,7 +250,7 @@ public class playerMovement : MonoBehaviour
 
         else if (Input.GetKeyUp("a"))
         {
-            
+
             animator.SetBool("strafeLeft", false);
             //animator.SetInteger("condition", 0);
 
@@ -244,7 +259,7 @@ public class playerMovement : MonoBehaviour
         if (Input.GetKey("d"))
         {
             // Debug.Log(v);
-            
+
             animator.SetBool("strafeRight", true);
             //animator.SetInteger("condition", -1);
 
@@ -257,7 +272,7 @@ public class playerMovement : MonoBehaviour
 
         }
 
-
+        /*
         if (Input.GetKeyDown("e"))
         {
             // Debug.Log(v);
@@ -271,6 +286,8 @@ public class playerMovement : MonoBehaviour
 
         }
 
+        */
+
         if (Input.GetKeyUp("space"))
         {
             animator.SetTrigger("jump");
@@ -282,7 +299,7 @@ public class playerMovement : MonoBehaviour
 
         ////    CHECKS IF DEAD
 
-        if (isDead == true)
+        if (isDead == true || health <= 0)
         {
             //animator.enabled = false;
             //controls.enabled = false;

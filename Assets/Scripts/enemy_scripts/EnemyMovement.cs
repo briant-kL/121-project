@@ -88,7 +88,8 @@ public class EnemyMovement : MonoBehaviour
 
         if (other.gameObject.CompareTag("sword_hitbox"))
         {
-            ragdoll.SetActive(true);
+            //ragdoll.SetActive(true);
+            //Instantiate<>
             gameObject.SetActive(false);
             
         }
